@@ -12,10 +12,12 @@ coverage
 .next/
 out/
 build
+dist
 
 # misc
 .DS_Store
 *.pem
+.idea
 
 # debug
 npm-debug.log*
@@ -31,3 +33,22 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+logs
+*.log
+pnpm-debug.log*
+lerna-debug.log*
+
+dist-ssr
+*.local
