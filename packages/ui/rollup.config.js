@@ -9,7 +9,7 @@ export default {
   input: "./index.ts",
   output: {
     dir: "dist",
-    format: "cjs",
+    format: "es",
     preserveModules: true,
     preserveModulesRoot: "src",
     sourcemap: true,
@@ -21,6 +21,7 @@ export default {
       tsconfig: "./tsconfig.json",
       declaration: true,
       declarationDir: "dist",
+      exclude: ["node_modules"],
     }),
     postcss(),
     terser(),

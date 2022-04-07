@@ -2,6 +2,7 @@
   "name": "@timer/ui",
   "private": true,
   "version": "0.0.0",
+  "main": "dist/packages/ui/index.js",
   "scripts": {
     "build": "tsc && vite build",
     "preview": "vite preview",
