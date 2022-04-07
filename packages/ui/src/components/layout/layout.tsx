@@ -6,6 +6,7 @@ export const Layout: FC = ({ children }) => {
     <div
       className="
         layout
+        box-sizing-border-box
         overflow-hidden
         rounded-md
         shadow-lg
