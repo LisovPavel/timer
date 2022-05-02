@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "main": "dist/packages/ui/index.js",
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "rollup -c",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

@@ -1,4 +1,4 @@
-const colors = require('tailwindcss/colors')
+const colors = require("tailwindcss/colors");
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -6,6 +6,9 @@ module.exports = {
     colors: {
       primary: colors.orange,
     },
+    animation: {
+      tick: "pulse 1s linear infinite",
+    },
   },
   plugins: [],
-}
+};
