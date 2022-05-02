@@ -8,6 +8,8 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "target": "ES5",
     "paths": {
       "*": ["node_modules/*"]
     }
