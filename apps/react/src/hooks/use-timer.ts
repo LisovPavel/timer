@@ -1,23 +1,31 @@
+import { useCallback } from "react";
 import { useState, useEffect } from "react";
+import { Subscriber } from "@timer/types";
+import { TimerStatus } from "../services/timer";
 
-import { TimerService, Subscriber } from "../services/timer";
-
-type TimerProps = {
-  duration: number;
-};
-
-const timer = new TimerService();
-
-export const useTimer = ({ duration }: TimerProps) => {
-  useEffect(() => timer.subscribe(handleTick), []);
-  const [leftTime, setLeftTime] = useState(duration);
-  const handleTick: Subscriber = ({ time }) => {
-    setLeftTime(duration - time);
-  };
+export const useTimer = () => {
+  useEffect(() => window.timerApi.subscribe(handleTick), []);
+  const [leftTime, setLeftTime] = useState(0);
+  const [extraTime, setExtraTime] = useState(0);
+  const [status, setSetStatus] = useState<TimerStatus>("stopped");
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const handleTick: Subscriber = useCallback(
+    ({ time, isActive: isTimerActive, status, extraTime, isActive }) => {
+      setLeftTime(time);
+      setExtraTime(extraTime);
+      setSetStatus(status);
+      setIsActive(isTimerActive);
+    },
+    []
+  );
 
   return {
-    start: timer.start,
-    stop: timer.stop,
+    init: window.timerApi.init,
+    start: window.timerApi.start,
+    stop: window.timerApi.stop,
     leftTime,
+    extraTime,
+    status,
+    isActive,
   };
 };
