@@ -1,7 +1,3 @@
-import { contextBridge, ipcRenderer }  from 'electron';
+import { exposeTimerApi } from "./api/timer/timer";
 
-contextBridge.exposeInMainWorld('electronApi', {
-    setTitle: (title: string) => ipcRenderer.send('set-title', title),
-})
-
-export {}
+exposeTimerApi();

@@ -1,24 +1,13 @@
+import { Interval, Subscriber, TimerStatus } from "@timer/types";
+
 export interface Timer {
   start: (callback: () => void) => void;
   stop: () => void;
 }
 
-export type TimerStatus = "stopped" | "started" | "paused";
-
-export type TickCallbackPayload = {
-  time: number;
-  extraTime: number;
-  status: TimerStatus;
-  isFinished: boolean;
-  isActive: boolean;
-};
-
-export type Interval = number;
-
-export type Subscriber = (payload: TickCallbackPayload) => void;
-
 export class IntervalsTimerService {
   constructor(private timer: Timer) {}
+  tickCounter = 0;
 
   private subs: Set<Subscriber> = new Set();
   status: TimerStatus = "stopped";
@@ -72,8 +61,8 @@ export class IntervalsTimerService {
     const extraTime = time === 0 ? Math.abs(leftTime) : 0;
     for (const sub of this.subs) {
       sub({
-        time: time,
-        extraTime: extraTime,
+        time,
+        extraTime,
         status: this.status,
         isFinished: this.isFinished,
         isActive: this.status === "started",
