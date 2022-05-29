@@ -1,0 +1,3 @@
+describe("IntervalsTimerService", () => {
+  test("");
+});
