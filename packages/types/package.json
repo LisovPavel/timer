@@ -3,5 +3,5 @@
   "version": "0.0.0",
   "private": true,
   "main": "index.d.ts",
-  "files": ["index.d.ts", "timer.ts"]
+  "files": ["index.d.ts", "timer.ts", "intervals.ts"]
 }
