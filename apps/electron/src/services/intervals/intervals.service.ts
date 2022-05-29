@@ -1,52 +1,59 @@
-import { IdService } from "../id/id.service";
 import {
-  addFinishAt,
-  addStatus,
-  extractStatus,
   addProgress,
+  extractStatus,
+  addStatus,
+  addStartFinishAt,
+  calcSumDurations,
 } from "@timer/utils";
+import { Interval, ExtendedInterval, IntervalServiceState } from "@timer/types";
 
-export enum IntervalStatus {
-  "pending" = "PENDING",
-  "active" = "ACTIVE",
-  "finished" = "FINISHED",
-}
-
-export type Interval = {
-  id: string;
-  duration: number;
-  status?: IntervalStatus;
-  isStarted?: boolean;
-  isActive?: boolean;
-  isFinished?: boolean;
-  progress?: number;
-  finishAt?: number;
-};
-
-type ExtendInterval = Required<Interval>;
+import { IdService } from "../id/id.service";
 
 export class IntervalsService {
   idService: IdService;
   constructor(private intervals: Interval[] = []) {
     this.idService = new IdService();
   }
-  add = (duration: number) => {
-    const id = this.idService.getNewId();
-    this.intervals.push({ id: this.idService.getNewId(), duration });
-    return id;
+  add = (intervals: Omit<Interval, "id">[]) => {
+    intervals.forEach((interval) => {
+      this.intervals.push({
+        id: this.idService.getNewId(),
+        duration: interval.duration,
+      });
+    });
   };
   delete = (id: string) => {
     this.intervals = this.intervals.filter((interval) => interval.id === id);
   };
-  getIntervals = (passedTime: number): ExtendInterval[] => {
+  clear = () => {
+    this.intervals = [];
+  };
+  getIntervals = (passedTime: number): ExtendedInterval[] => {
     return this.extendIntervals(passedTime);
   };
-  private extendIntervals = (passedTime: number): ExtendInterval[] => {
+
+  getState = (passedTime: number): IntervalServiceState => {
+    const intervals = this.getIntervals(passedTime);
+    const isFinished = intervals.every((interval) => interval.isFinished);
+    const allIntervalsDuration = calcSumDurations(
+      this.intervals,
+      0,
+      this.intervals.length - 1
+    );
+    const extraTime = isFinished ? passedTime - allIntervalsDuration : 0;
+    return {
+      intervals,
+      isFinished,
+      extraTime,
+      allIntervalsDuration,
+    };
+  };
+  private extendIntervals = (passedTime: number): ExtendedInterval[] => {
     //todo fix extendIntervals types
     return this.intervals
-      .map(addFinishAt)
+      .map(addStartFinishAt)
       .map(addStatus(passedTime))
       .map(extractStatus)
-      .map(addProgress(passedTime)) as ExtendInterval[];
+      .map(addProgress(passedTime)) as ExtendedInterval[];
   };
 }
