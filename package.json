@@ -5,12 +5,14 @@
   "private": true,
   "author": {
     "name": "Лисов Павел",
-    "email": "lisovpa@vtblife.ru"
+    "email": "lisovweb@gmail.com"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ]
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
@@ -30,7 +32,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-multi-entry": "^4.1.0",
-    "@types/jest": "^27.5.1",
+    "@types/jest": "^28.1.0",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@vitejs/plugin-react": "^1.0.7",

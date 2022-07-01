@@ -1,3 +1,7 @@
+import { InitialInterval } from "./intervals";
+import { IntervalsServicePayload } from "./intervals";
+import { Interval } from "./intervals";
+
 export type TimerStatus = "stopped" | "started" | "paused";
 
 export type TickCallbackPayload = {
@@ -7,13 +11,12 @@ export type TickCallbackPayload = {
   isFinished: boolean;
   isActive: boolean;
 };
-export type Subscriber = (payload: TickCallbackPayload) => void;
-export type Interval = number;
+export type Subscriber = (payload: IntervalsServicePayload) => void;
 
 export type TimerApi = {
-  init: (intervals: Interval[]) => void;
   start: () => void;
   stop: () => void;
-  increase: (extraTime: Interval) => void;
-  subscribe: (callback: Subscriber) => void;
+  pause: () => void;
+  addIntervals: (intervals: InitialInterval[]) => void;
+  subscribe: (callback: any) => void;
 };

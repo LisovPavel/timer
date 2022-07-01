@@ -1,12 +1,17 @@
+import { TimerStatus } from "./timer";
+
 export enum IntervalStatus {
   "pending" = "PENDING",
   "active" = "ACTIVE",
   "finished" = "FINISHED",
 }
 
-export type Interval = {
-  id: string;
+export type InitialInterval = {
   duration: number;
+};
+
+export type Interval = InitialInterval & {
+  id: string;
   leftTimeToEnd?: number;
   status?: IntervalStatus;
   isStarted?: boolean;
@@ -24,4 +29,14 @@ export type IntervalServiceState = {
   extraTime: number;
   intervals: ExtendedInterval[];
   allIntervalsDuration: number;
+};
+
+export type IntervalsServicePayload = {
+  intervals: ExtendedInterval[];
+  timer: {
+    status: TimerStatus;
+    isFinished: boolean;
+    extraTime: number;
+    pastedTime: number;
+  };
 };
