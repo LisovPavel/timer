@@ -1,40 +1,18 @@
 import { contextBridge, ipcRenderer } from "electron";
-import {
-  Interval,
-  TimerApi,
-  Subscriber,
-  TickCallbackPayload,
-} from "@timer/types";
+import { TimerApi, InitialInterval } from "@timer/types";
+import { SubscribeService } from "../../services/subscribe/subscribe.service";
 
 export enum TimerApiChannels {
   init = "timer-api:init",
   start = "timer-api:start",
   stop = "timer-api:stop",
-  increase = "timer-api:increase",
+  pause = "timer-api:pause",
+  addIntervals = "timer-api:add-intervals",
   subscribe = "timer-api:subscribe",
   serviceSubscribe = "service:timer-api:subscribe",
 }
 
-class SubsManager {
-  subs = new Map<Subscriber, Subscriber>();
-  subscribe = (callback: Subscriber) => {
-    if (!this.subs.has(callback)) {
-      this.subs.set(callback, callback);
-    }
-    return () => this.unsubscribe(callback);
-  };
-  unsubscribe = (callback: Subscriber) => {
-    this.subs.delete(callback);
-  };
-  trigger = (payload: TickCallbackPayload) => {
-    this.subs.forEach((callback) => callback(payload));
-  };
-  get isEmpty() {
-    return !this.subs.size;
-  }
-}
-
-const subsManager = new SubsManager();
+const subsManager = new SubscribeService();
 
 const subscribeIpcMain = (function () {
   let isSubscribed = false;
@@ -43,19 +21,18 @@ const subscribeIpcMain = (function () {
     isSubscribed = true;
     ipcRenderer.send(TimerApiChannels.serviceSubscribe);
     ipcRenderer.on(TimerApiChannels.subscribe, (_, payload) => {
-      subsManager.trigger(payload);
+      subsManager.publishEvent(payload);
     });
   };
 })();
 
 const api: TimerApi = {
-  init: (intervals: Interval[]) =>
-    ipcRenderer.send(TimerApiChannels.init, intervals),
   start: () => ipcRenderer.send(TimerApiChannels.start),
   stop: () => ipcRenderer.send(TimerApiChannels.stop),
-  increase: (extraTime: Interval) =>
-    ipcRenderer.send(TimerApiChannels.increase, extraTime),
-  subscribe: (callback: Subscriber) => {
+  pause: () => ipcRenderer.send(TimerApiChannels.pause),
+  addIntervals: (intervals: InitialInterval[]) =>
+    ipcRenderer.send(TimerApiChannels.addIntervals, intervals),
+  subscribe: (callback: any) => {
     subscribeIpcMain();
     return subsManager.subscribe(callback);
   },

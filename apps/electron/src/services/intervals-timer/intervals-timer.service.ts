@@ -1,20 +1,7 @@
-import { TimerStatus } from "@timer/types";
-import {
-  ExtendedInterval,
-  IntervalsService,
-} from "../intervals/intervals.service";
+import { IntervalsServicePayload, TimerStatus } from "@timer/types";
+import { IntervalsService } from "../intervals/intervals.service";
 import { StopwatchService } from "../stopwatch-service/stopwatch.service";
 import { SubscribeService } from "../subscribe/subscribe.service";
-
-type IntervalsServicePayload = {
-  intervals: ExtendedInterval[];
-  timer: {
-    status: TimerStatus;
-    isFinished: boolean;
-    extraTime: number;
-    pastedTime: number;
-  };
-};
 
 export class IntervalsTimerService {
   constructor(
@@ -26,7 +13,6 @@ export class IntervalsTimerService {
   }
 
   status: TimerStatus = "stopped";
-  private startTime = 0;
 
   private setStatus = (status: TimerStatus) => {
     this.status = status;
@@ -38,7 +24,6 @@ export class IntervalsTimerService {
   };
 
   stop = () => {
-    this.startTime = 0;
     this.timer.stop();
     this.setStatus("stopped");
   };

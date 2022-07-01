@@ -1,16 +1,37 @@
 {
-  "name": "electron",
+  "name": "@timer/electron",
   "productName": "electron",
   "version": "1.0.0",
   "description": "Timer",
   "main": "dist/index.js",
+  "private": true,
+  "workspaces": {
+    "nohoist": ["@timer/utils", "**/@timer/utils/**"]
+  },
+  "watch": {
+    "restart-electron-app": {
+      "patterns": [
+        "dist"
+      ],
+      "extensions": "ts,tsx"
+    },
+    "build": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "ts,tsx"
+    }
+  },
   "scripts": {
-    "dev": "tsc && electron-forge start",
+    "dev": "tsc && yarn start:electron-app",
     "start": "tsc && electron-forge start",
+    "build": "tsc",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "start:electron-app": "npm-watch restart-electron-app",
+    "restart-electron-app": "electron-forge start"
   },
   "keywords": [],
   "author": {
@@ -22,6 +43,7 @@
     "forge": "./forge.config.js"
   },
   "devDependencies": {
+    "@timer/utils": "0.0.0",
     "@types/uuid": "^8.3.4",
     "electron": "17.1.2",
     "@electron-forge/cli": "^6.0.0-beta.63",

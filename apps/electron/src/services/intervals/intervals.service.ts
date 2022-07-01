@@ -5,7 +5,12 @@ import {
   addStartFinishAt,
   calcSumDurations,
 } from "@timer/utils";
-import { Interval, ExtendedInterval, IntervalServiceState } from "@timer/types";
+import {
+  Interval,
+  ExtendedInterval,
+  IntervalServiceState,
+  InitialInterval,
+} from "@timer/types";
 
 import { IdService } from "../id/id.service";
 
@@ -14,7 +19,7 @@ export class IntervalsService {
   constructor(private intervals: Interval[] = []) {
     this.idService = new IdService();
   }
-  add = (intervals: Omit<Interval, "id">[]) => {
+  add = (intervals: InitialInterval[]) => {
     intervals.forEach((interval) => {
       this.intervals.push({
         id: this.idService.getNewId(),

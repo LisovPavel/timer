@@ -10,9 +10,13 @@
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "target": "ES5",
+    "skipLibCheck": true,
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "types": ["@timer/types"],
+    "preserveSymlinks": true
   },
+  "exclude": ["src/**/tests/**"],
   "include": ["src/**/*"]
 }

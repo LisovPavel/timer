@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
-import { initIntervalsTimerController } from "./services/intervals-timer/interval-timer-controller";
+import { IntervalsTimerController } from "./controllers/interval-timers/interval-timers.controller";
 
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -39,6 +39,8 @@ app.on("activate", () => {
   }
 });
 
+const mainIntervalsTimerController = new IntervalsTimerController();
+
 app.whenReady().then(() => {
-  initIntervalsTimerController(mainWindow);
+  mainIntervalsTimerController.init(mainWindow);
 });
